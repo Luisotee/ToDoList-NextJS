@@ -10,7 +10,7 @@ export default function Home() {
     e.preventDefault()
     let newTask = {
       id: 0,
-      todo: 'coisas'
+      todo: e.target.value
     }
     setTask(newTask)
 
@@ -20,9 +20,9 @@ export default function Home() {
   return (
     <div className="container">
       <header className="display-2 text-center">To-Do List</header>
-      <form className="input-group mt-5" onSubmit={handleAddTask}>
+      <form className="input-group mt-5" onSubmit={e => handleAddTask(e)}>
         <input type="text" className="form-control" placeholder="Type task"></input>
-        <button type="submit" className="btn btn-primary">Submit</button>
+        <button type="submit" className="btn btn-primary" >Submit</button>
       </form>
       <div>
         {console.log(task)}
