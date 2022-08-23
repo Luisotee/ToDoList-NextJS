@@ -80,10 +80,10 @@ export default function Home() {
                     <td>
                       <button
                         type="submit"
-                        className="btn btn-danger"
+                        className="btn btn-success"
                         onClick={() => handleDeleteTask(task)}
                       >
-                        Delete
+                        Finished
                       </button>
                     </td>
                   </tr>
