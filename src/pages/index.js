@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import '../components/table';
+import Notiflix from 'notiflix';
 import { v4 as uuidv4 } from 'uuid';
-import Table from '../components/table';
 
 export default function Home() {
   const [task, setTask] = useState({});
@@ -10,6 +9,9 @@ export default function Home() {
 
   function handleAddTask(e) {
     e.preventDefault();
+    if (!todo) {
+      return Notiflix.Notify.failure('Task field must not be empty');
+    }
     let newTask = {
       id: uuidv4(),
       todo: todo,
@@ -28,9 +30,14 @@ export default function Home() {
     setTodo('');
   }
 
-  function handleDeleteTask(task) {}
+  function handleDeleteTask(task) {
+    const deleted = tasks.filter((t) => t.id !== task.id);
+    setTasks(deleted);
+    localStorage.setItem('localTasks', JSON.stringify(deleted));
+  }
 
   useEffect(() => {
+    document.title = 'To-Dos';
     if (localStorage.getItem('localTasks')) {
       const storedList = JSON.parse(localStorage.getItem('localTasks'));
       setTasks(storedList);
@@ -55,12 +62,34 @@ export default function Home() {
         </form>
         <div className="mt-5">
           {tasks.map((task) => (
-            <Table
-              key={task.id}
-              todo={task.todo}
-              status={task.status}
-              time={task.time}
-            />
+            <div className="card-body">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Time</th>
+                    <th scope="col">To-Do item</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">{task.time}</th>
+                    <td>{task.todo}</td>
+                    <td>{task.status}</td>
+                    <td>
+                      <button
+                        type="submit"
+                        className="btn btn-danger"
+                        onClick={() => handleDeleteTask(task)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           ))}
         </div>
       </div>
